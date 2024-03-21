@@ -9,13 +9,14 @@ const page = (props: Props) => {
     <div className='w-screen h-screen flex justify-center items-center'>
 
       <div className='flex gap-5'>
-   
+
 
         {/* CVA button */}
 
         <CvaButton intent='primary' size='small'>Primary</CvaButton>
         <CvaButton intent='secondary' size='medium' animate={true} > Secondary</CvaButton>
-        <CvaButton  size='medium' disabled={true} > Disabled secondary</CvaButton>
+        <CvaButton size='medium' disabled={true} > Disabled secondary </CvaButton>
+        <CvaButton intent='primary'size='medium' animate={true} plusIcon={true} > Add User </CvaButton>
 
 
       </div>

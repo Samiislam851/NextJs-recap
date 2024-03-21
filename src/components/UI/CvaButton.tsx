@@ -1,4 +1,5 @@
 'use client'
+import { PlusCircle } from "@phosphor-icons/react";
 import { cva } from "class-variance-authority";
 import clsx from "clsx";
 import React, { ReactNode } from 'react'
@@ -37,7 +38,17 @@ const CvaButton = ({ className, children, intent, size, disabled = false, animat
     const dynamicClasses = button({ intent, size });
 
 
-    return <button disabled={disabled} className={clsx(dynamicClasses, className, { "cursor-not-allowed bg-gray-400": disabled === true }, { 'transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105': animate === true })}>{children}</button>
+    return <button
+        disabled={disabled}
+        className={
+            clsx(dynamicClasses, className, 'flex gap-2 items-center justify-center',
+                { "cursor-not-allowed bg-gray-400": disabled === true },
+                { "transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105": animate === true })} >
+
+        {plusIcon && <PlusCircle size={32} />}
+        <span>{children}</span>
+
+    </button>
 
 }
 
