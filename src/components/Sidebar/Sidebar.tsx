@@ -6,7 +6,7 @@ import React from 'react'
 
 const Sidebar = () => {
     return (
-        <div className='border px-10 py-5'>
+        <div className='border px-10 py-5 min-h-screen'>
             <div className='w-fit mx-auto'>
                 <Image src={'/Main_Logo_1.png'} height={70} width={150} alt='Logo' />
             </div>
@@ -18,9 +18,9 @@ const Sidebar = () => {
             {/* Links */}
             <div className='flex flex-col gap-2'>
                 <div>
-                    <Link href={'overView'}>Overview</Link>
+                    <Link href={'/company/overview'}>Overview</Link>
                 </div>
-                <Link href={'companies'}>Companies</Link>
+                <Link href={'/company/companies'}>Companies</Link>
 
 
 
