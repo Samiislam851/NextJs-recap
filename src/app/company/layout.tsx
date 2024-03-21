@@ -9,7 +9,7 @@ type Props = {
 const Layout = ({ children }: Props) => {
     return (
         <>
-            <div className='flex w-screen h-screen'>
+            <div className='flex w-screen h-screen overflow-x-hidden'>
                 <div className='w-fit'>
                     <Sidebar />
                 </div>

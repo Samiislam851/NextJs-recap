@@ -15,7 +15,7 @@ const TableData = ({companyData}: Props) => {
 
         <div className='grid grid-cols-6 text-start pt-0'>
             <div className="flex flex-col justify-start items-center w-full ">
-                <div className={headerClasses}>{companyData.namy}</div>
+                <div className={headerClasses}>{companyData.name}</div>
             </div>
             <div className="flex flex-col justify-start items-center w-full ">
                 <div className={headerClasses}>{companyData.phone}</div>
@@ -32,7 +32,6 @@ const TableData = ({companyData}: Props) => {
             <div className="flex flex-col justify-start items-center w-full ">
                 <div className={headerClasses}>Action</div>
             </div>
-
         </div>
 
     )

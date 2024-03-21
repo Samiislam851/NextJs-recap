@@ -1,6 +1,8 @@
 'use client'
 
+import TableData from '@/components/TableData/TableData';
 import CvaButton from '@/components/UI/CvaButton';
+import LoadingUi from '@/components/UI/LoadingUi';
 import { CaretLeft, CaretRight, MagnifyingGlass } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -60,8 +62,6 @@ const Companies = (props: Props) => {
 
     return (
         <div className='p-5'>
-
-
             <div className='flex justify-between '>
                 <div>
                     <p className='text-blue-600'>Companies</p>
@@ -126,10 +126,10 @@ const Companies = (props: Props) => {
             </div>
 
 
-            {/* {companiesList.map()} */}
+      
 
 
-
+<LoadingUi/>
 
 
 
