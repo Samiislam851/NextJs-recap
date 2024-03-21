@@ -13,9 +13,9 @@ const page = (props: Props) => {
 
         {/* CVA button */}
 
-        <CvaButton intent='primary' size='small'>primary</CvaButton>
+        <CvaButton intent='primary' size='small'>Primary</CvaButton>
         <CvaButton intent='secondary' size='medium' animate={true} > Secondary</CvaButton>
-        <CvaButton intent='secondary' size='medium' disabled={true} > Disabled secondary</CvaButton>
+        <CvaButton  size='medium' disabled={true} > Disabled secondary</CvaButton>
 
 
       </div>

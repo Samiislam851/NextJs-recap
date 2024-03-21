@@ -9,7 +9,9 @@ interface ButtonProps {
     size: 'small' | 'medium',
     children: ReactNode,
     disabled?: boolean,
-    animate?: boolean
+    animate?: boolean,
+    className?: string,
+    plusIcon?: boolean
 }
 
 
@@ -19,7 +21,7 @@ const button = cva(
         variants: {
             intent: {
                 primary: ['bg-blue-600', 'border-transparent'],
-                secondary: ['bg-green-500']
+                secondary: ['bg-green-500 hover:bg-green-700']
             },
             size: {
                 small: ['text-sm', 'py-1', 'px-2'],
@@ -30,18 +32,12 @@ const button = cva(
     }
 )
 
-const CvaButton = ({ children, intent, size, disabled = false, animate = false }: ButtonProps) => {
+const CvaButton = ({ className, children, intent, size, disabled = false, animate = false, plusIcon = false }: ButtonProps) => {
 
     const dynamicClasses = button({ intent, size });
-    
-    const additionalClasses = clsx({
-        'disabled': disabled === true,
-        'transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105': animate === true
-    })
-    const combinedClasses = dynamicClasses + ' ' + additionalClasses
 
 
-    return <button className={combinedClasses}>{children}</button>
+    return <button disabled={disabled} className={clsx(dynamicClasses, className, { "cursor-not-allowed bg-gray-400": disabled === true }, { 'transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105': animate === true })}>{children}</button>
 
 }
 
