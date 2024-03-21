@@ -1,10 +1,15 @@
 'use client'
 import { cva } from "class-variance-authority";
+import clsx from "clsx";
 import React, { ReactNode } from 'react'
+
+
 interface ButtonProps {
-    intent: 'primary' | 'secondary',
+    intent?: 'primary' | 'secondary',
     size: 'small' | 'medium',
-    children: ReactNode
+    children: ReactNode,
+    disabled?: boolean,
+    animate?: boolean
 }
 
 
@@ -13,7 +18,7 @@ const button = cva(
     {
         variants: {
             intent: {
-                primary: ['bg-red-600', 'border-transparent'],
+                primary: ['bg-blue-600', 'border-transparent'],
                 secondary: ['bg-green-500']
             },
             size: {
@@ -25,13 +30,18 @@ const button = cva(
     }
 )
 
-const CvaButton = ({ children, intent, size }: ButtonProps) => {
+const CvaButton = ({ children, intent, size, disabled = false, animate = false }: ButtonProps) => {
 
-    const buttonClasses = button({ intent, size });
-    console.log(buttonClasses);
+    const dynamicClasses = button({ intent, size });
+    
+    const additionalClasses = clsx({
+        'disabled': disabled === true,
+        'transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105': animate === true
+    })
+    const combinedClasses = dynamicClasses + ' ' + additionalClasses
 
 
-    return <button className={buttonClasses}>{children}</button>
+    return <button className={combinedClasses}>{children}</button>
 
 }
 
