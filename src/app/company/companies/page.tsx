@@ -2,7 +2,7 @@
 
 import TableData from '@/components/TableData/TableData';
 import CvaButton from '@/components/UI/CvaButton';
-import LoadingUi from '@/components/UI/LoadingUi';
+import LoadingUI from '@/components/UI/LoadingUI';
 import { CaretLeft, CaretRight, MagnifyingGlass } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -129,7 +129,7 @@ const Companies = (props: Props) => {
       
 
 
-<LoadingUi/>
+<LoadingUI/>
 
 
 
