@@ -8,21 +8,27 @@ import { TableDataType } from '@/utils/tableDataType';
 import { CaretLeft, CaretRight, MagnifyingGlass } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
+import Pagination from './Pagination';
 
 type Props = {}
 
 const Companies = (props: Props) => {
 
 
-    const [currentPage, setCurrentPage] = useState<number>(1)
-    const [searchTerm, setSearchTerm] = useState('')
+    const searchParams = useSearchParams()
+    const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') ?? '1') ?? 1)
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('query') ?? '')
 
 
-    const path = usePathname()
-    console.log('...................', path);
+    const router = useRouter();
+
+
+
+
+
 
 
     const pageSize = 10
@@ -31,6 +37,9 @@ const Companies = (props: Props) => {
     const { data, isError, isFetching, refetch } = useQuery<TableDataType, Error, TableDataType>({
         queryKey: ['users'],
         queryFn: () => {
+
+
+
             return axios.get(`http://192.168.0.168:5000/company/list?page=${currentPage}&size=${pageSize}&query=${searchTerm}`, {
                 headers: {
                     'Content-type': 'application/json',
@@ -47,12 +56,15 @@ const Companies = (props: Props) => {
         console.log(data.searchTerm);
         setSearchTerm(data.searchTerm)
         setCurrentPage(1)
-
     };
 
     console.log(data, isError, isFetching);
 
     useEffect(() => {
+
+        router.push(`/company/companies?page=${currentPage}&size=${pageSize}&query=${searchTerm}`)
+
+
         refetch()
     }, [currentPage, searchTerm])
 
@@ -88,6 +100,7 @@ const Companies = (props: Props) => {
                     <form onSubmit={handleSubmit(onSubmit)} className="relative">
                         <MagnifyingGlass className='absolute bottom-[7px] text-gray-500' size={25} />
                         <input
+                            defaultValue={searchParams.get('query') ?? ''}
                             type="text"
                             placeholder="Search by name, phone, email, location"
                             {...register('searchTerm')}
@@ -148,29 +161,7 @@ const Companies = (props: Props) => {
                     </> : <></>}
 
 
-                    {/* pagination control */}
-
-                    <div className="flex  justify-between pt-5 text-gray-500">
-
-                        <span>
-
-                            Showing {(data && data.data?.data?.length < 10) ?
-                                ((currentPage - 1) * 10) + data.data?.data.length
-                                :
-                                currentPage * 10} of {data && data.data?.count}
-                        </span>
-
-                        <div className='border'>
-                            <button disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-                                <CaretLeft size={25} />
-                            </button>
-
-                            <button disabled={currentPage === (Math.ceil(data?.data.count! / 10))} onClick={() => setCurrentPage((prev) => prev + 1)}>
-                                <CaretRight size={25} />
-                            </button>
-                        </div>
-
-                    </div>
+                    <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} data={data} />
 
                 </>
 
