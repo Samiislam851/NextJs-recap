@@ -1,10 +1,11 @@
+import { User } from '@phosphor-icons/react'
 import React from 'react'
 
 type Props = {
-    companyData : any
+    companyData: any
 }
 
-const TableData = ({companyData}: Props) => {
+const TableData = ({ companyData }: Props) => {
 
 
 
@@ -24,13 +25,13 @@ const TableData = ({companyData}: Props) => {
                 <div className={headerClasses}>{companyData.email}</div>
             </div>
             <div className="flex flex-col justify-start items-center w-full ">
-                <div className={headerClasses}>{companyData.location}</div>
+                <div className={headerClasses}>{companyData.addresses.addressLine}</div>
             </div>
             <div className="flex flex-col justify-start items-center w-full ">
-                <div className={headerClasses}>Products</div>
+                <div className={headerClasses + 'flex gap-1'}>  <User size={20} />   1</div>
             </div>
             <div className="flex flex-col justify-start items-center w-full ">
-                <div className={headerClasses}>Action</div>
+                <div className={headerClasses}>Details</div>
             </div>
         </div>
 

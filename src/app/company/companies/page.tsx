@@ -3,9 +3,12 @@
 import TableData from '@/components/TableData/TableData';
 import CvaButton from '@/components/UI/CvaButton';
 import LoadingUI from '@/components/UI/LoadingUI';
+import { TableDataType } from '@/utils/tableDataType';
+
 import { CaretLeft, CaretRight, MagnifyingGlass } from '@phosphor-icons/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 
@@ -15,23 +18,20 @@ const Companies = (props: Props) => {
 
 
     const [currentPage, setCurrentPage] = useState<number>(1)
-    const [totalCount, setTotalCount] = useState<number>(0)
+    const [searchTerm, setSearchTerm] = useState('')
 
+
+    const path = usePathname()
+    console.log('...................', path);
 
 
     const pageSize = 10
     const token = localStorage.getItem('basic-login')
 
-
-    const { data, isError, isFetching } = useQuery<unknown, Error>({
+    const { data, isError, isFetching, refetch } = useQuery<TableDataType, Error, TableDataType>({
         queryKey: ['users'],
         queryFn: () => {
-
-
-
-
-
-            return axios.get(`http://192.168.0.168:5000/company/list?page=${currentPage}&size=${pageSize}&query=`, {
+            return axios.get(`http://192.168.0.168:5000/company/list?page=${currentPage}&size=${pageSize}&query=${searchTerm}`, {
                 headers: {
                     'Content-type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -43,17 +43,21 @@ const Companies = (props: Props) => {
 
 
 
+    const onSubmit = (data: any) => {
+        console.log(data.searchTerm);
+        setSearchTerm(data.searchTerm)
+        setCurrentPage(1)
+
+    };
 
     console.log(data, isError, isFetching);
 
+    useEffect(() => {
+        refetch()
+    }, [currentPage, searchTerm])
 
 
-    const { register, handleSubmit, setValue, reset } = useForm();
-
-    const onSubmit = (data: any) => {
-        console.log(data.searchTerm);
-        reset()
-    };
+    const { register, handleSubmit } = useForm();
 
     const headerClasses = "bg-gray-100 text-gray-700 w-full ps-2 py-2 font-medium text-sm uppercase"
 
@@ -61,7 +65,7 @@ const Companies = (props: Props) => {
 
 
     return (
-        <div className='p-5'>
+        <div className='p-5 h-screen overflow-y-scroll'>
             <div className='flex justify-between '>
                 <div>
                     <p className='text-blue-600'>Companies</p>
@@ -102,59 +106,75 @@ const Companies = (props: Props) => {
 
 
 
-            {/* Table Section */}
-
-            <div className='grid grid-cols-6 text-start pt-3'>
-                <div className="flex flex-col justify-start items-center w-full ">
-                    <div className={headerClasses}>Company</div>
-                </div>
-                <div className="flex flex-col justify-start items-center w-full ">
-                    <div className={headerClasses}>Phone</div>
-                </div>
-                <div className="flex flex-col justify-start items-center w-full ">
-                    <div className={headerClasses}>Email</div>
-                </div>
-                <div className="flex flex-col justify-start items-center w-full ">
-                    <div className={headerClasses}>Location</div>
-                </div>
-                <div className="flex flex-col justify-start items-center w-full ">
-                    <div className={headerClasses}>Products</div>
-                </div>
-                <div className="flex flex-col justify-start items-center w-full ">
-                    <div className={headerClasses}>Action</div>
-                </div>
-            </div>
-
-
-      
-
-
-<LoadingUI/>
 
 
 
-            {/* pagination control */}
+            {isFetching ? <LoadingUI /> :
 
-            <div className="flex  justify-between pt-5 text-gray-500">
+                <>
 
-                <span>
-                    Showing {currentPage * 10} of 
-                    {/* {data&& data.count} */}
-                </span>
+                    {/* Table Section */}
 
-                <div className='border'>
-                    <button disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
-                        <CaretLeft size={25} />
-                    </button>
+                    <div className='grid grid-cols-6 text-start pt-3'>
+                        <div className="flex flex-col justify-start items-center w-full ">
+                            <div className={headerClasses}>Company</div>
+                        </div>
+                        <div className="flex flex-col justify-start items-center w-full ">
+                            <div className={headerClasses}>Phone</div>
+                        </div>
+                        <div className="flex flex-col justify-start items-center w-full ">
+                            <div className={headerClasses}>Email</div>
+                        </div>
+                        <div className="flex flex-col justify-start items-center w-full ">
+                            <div className={headerClasses}>Location</div>
+                        </div>
+                        <div className="flex flex-col justify-start items-center w-full ">
+                            <div className={headerClasses}>Products</div>
+                        </div>
+                        <div className="flex flex-col justify-start items-center w-full ">
+                            <div className={headerClasses}>Action</div>
+                        </div>
+                    </div>
 
 
-                    <button disabled={currentPage === 10} onClick={() => setCurrentPage((prev) => prev + 1)}>
-                        <CaretRight size={25} />
-                    </button>
-                </div>
 
-            </div>
+                    {data ? <>
 
+                        {data?.data.data.map((companyData: any, i: number) => <TableData key={i} companyData={companyData} />)
+                        }
+
+
+
+                    </> : <></>}
+
+
+                    {/* pagination control */}
+
+                    <div className="flex  justify-between pt-5 text-gray-500">
+
+                        <span>
+
+                            Showing {(data && data.data?.data?.length < 10) ?
+                                ((currentPage - 1) * 10) + data.data?.data.length
+                                :
+                                currentPage * 10} of {data && data.data?.count}
+                        </span>
+
+                        <div className='border'>
+                            <button disabled={currentPage === 1} onClick={() => setCurrentPage((prev) => prev - 1)}>
+                                <CaretLeft size={25} />
+                            </button>
+
+                            <button disabled={currentPage === (Math.ceil(data?.data.count! / 10))} onClick={() => setCurrentPage((prev) => prev + 1)}>
+                                <CaretRight size={25} />
+                            </button>
+                        </div>
+
+                    </div>
+
+                </>
+
+            }
 
         </div>
 

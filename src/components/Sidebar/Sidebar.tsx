@@ -23,7 +23,7 @@ const Sidebar = () => {
         {
             title: 'Companies',
             icon: <Buildings size={iconSize} />,
-            link: '/company/companies'
+            link: '/company/companies?page=1&size=10&query='
         },
         {
             title: 'Products',

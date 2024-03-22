@@ -13,7 +13,7 @@ interface props {
 const NavLink = ({ href, icon, children }: props) => {
     const pathname = usePathname();
 
-    const isActive = href === pathname;
+    const isActive = href.includes(pathname);
 
     return (
         <div className='font-medium w-full'>
