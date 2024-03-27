@@ -1,5 +1,6 @@
 'use client'
 
+import { userLoggedIn } from '@/features/userSlice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -10,6 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch } from 'react-redux'
 import { z } from 'zod'
 
 
@@ -40,6 +42,9 @@ const page = (props: Props) => {
             .includes('@', { message: 'Password must include an @' })
 
     })
+
+
+    const dispatch = useDispatch()
 
 
     const togglePasswordVisibility = () => {
@@ -76,15 +81,26 @@ const page = (props: Props) => {
     )
 
 
-//////// User state checking 
+
+
+
+
+
+
+    //////// User state checking 
 
     const userState = localStorage.getItem('basic-login')
 
     console.log(userState);
 
-    if (userState) {
-        router.push('/company')
-    }
+
+
+    useEffect(() => {
+        if (userState) {
+            router.push('/company')
+        }
+    }, [userState])
+
 
 
 
@@ -104,20 +120,20 @@ const page = (props: Props) => {
             password: data.password,
             grantType: 'password',
             refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTAyYmEwNDg4NjQxNzUxMDE4NmFkNmEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiY2xpZW50SWQiOiI2NTAzMDdhZTNiODE0NDdlNWQ3OTM0MjUiLCJlbWFpbCI6IjZzZW5zZWV2QGdtYWlsLmNvbSIsImlhdCI6MTY5NTM1OTE3OSwiZXhwIjoxNjk1MzU5Nzc5fQ.x6tNWy3Hz1BUM_PS0jpBwSWm7RHWtNks3o-UuJCUMcI'
-
         }
         console.log('body data before mutation', bodyData);
 
 
         mutation.mutate(bodyData,
             {
-                onSuccess: (data : any) => {
+                onSuccess: (data: any) => {
 
                     console.log('success data ', data);
 
                     localStorage.setItem('basic-login', data?.data.auth.accessToken)
 
-                    router.push('/company')
+                    dispatch(userLoggedIn(data.data.user))
+
 
                 },
                 onError: (err) => console.log(err)
@@ -164,7 +180,10 @@ const page = (props: Props) => {
                                 />
                                 {errors.email ?
                                     <p className='text-red-500 text-sm italic ps-3'>{errors.email.message}</p>
-                                    : <></>}
+                                    :
+                                    <>
+
+                                    </>}
 
                             </div>
 

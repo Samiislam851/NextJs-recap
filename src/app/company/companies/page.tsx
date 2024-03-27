@@ -12,22 +12,23 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import Pagination from './Pagination';
+import { useSelector } from 'react-redux';
 
 type Props = {}
 
 const Companies = (props: Props) => {
 
-
+    const { register, handleSubmit } = useForm();
     const searchParams = useSearchParams()
+    const router = useRouter();
     const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') ?? '1') ?? 1)
     const [searchTerm, setSearchTerm] = useState(searchParams.get('query') ?? '')
 
-
-    const router = useRouter();
-
+    const userState = useSelector((state: any) => state.user)
 
 
 
+    console.log('the state....................', userState.user);
 
 
 
@@ -69,7 +70,6 @@ const Companies = (props: Props) => {
     }, [currentPage, searchTerm])
 
 
-    const { register, handleSubmit } = useForm();
 
     const headerClasses = "bg-gray-100 text-gray-700 w-full ps-2 py-2 font-medium text-sm uppercase"
 
@@ -98,7 +98,8 @@ const Companies = (props: Props) => {
                 <div className='basis-[70%]'>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="relative">
-                        <MagnifyingGlass className='absolute bottom-[7px] text-gray-500' size={25} />
+                        {/* @ts-ignore */}
+                        <MagnifyingGlass className={'absolute bottom-[7px] text-gray-500'} size={25} />
                         <input
                             defaultValue={searchParams.get('query') ?? ''}
                             type="text"

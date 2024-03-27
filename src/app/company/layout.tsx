@@ -1,12 +1,28 @@
 'use client'
 import Sidebar from '@/components/Sidebar/Sidebar'
-import React, { ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
+import React, { ReactNode, useEffect } from 'react'
 
 type Props = {
     children: ReactNode
 }
 
 const Layout = ({ children }: Props) => {
+    const router = useRouter()
+
+
+
+
+    useEffect(() => {
+
+        const userState = localStorage.getItem('basic-login')
+        if (!userState) {
+
+            router.push('/login')
+
+        }
+    })
+
     return (
         <>
             <div className='flex w-screen h-screen overflow-x-hidden'>
