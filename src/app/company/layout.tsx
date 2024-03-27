@@ -22,21 +22,11 @@ const Layout = ({ children }: Props) => {
             router.push('/login')
 
         }
-        
+
     }, [user])
 
 
-    //@ts-ignore
-    axios.interceptors.request.use((request) => {
 
-
-        const token = localStorage.getItem('basic-login')
-
-        if (token) {
-            request.headers.Authorization = `Bearer ${token}`
-        }
-
-    })
 
 
 

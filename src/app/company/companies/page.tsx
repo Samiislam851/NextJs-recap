@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import Pagination from './Pagination';
 import { useSelector } from 'react-redux';
+import clientAxios from '@/utils/axiosConfig';
 
 type Props = {}
 
@@ -41,12 +42,7 @@ const Companies = (props: Props) => {
 
 
 
-            return axios.get(`http://192.168.0.168:5000/company/list?page=${currentPage}&size=${pageSize}&query=${searchTerm}`, {
-                headers: {
-                    'Content-type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            return clientAxios.get(`company/list?page=${currentPage}&size=${pageSize}&query=${searchTerm}`)
         }
     })
 

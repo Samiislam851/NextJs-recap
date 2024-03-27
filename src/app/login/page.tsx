@@ -1,6 +1,7 @@
 'use client'
 
 import { userLoggedIn } from '@/features/userSlice'
+import clientAxios from '@/utils/axiosConfig'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -65,17 +66,9 @@ const page = (props: Props) => {
         {
             mutationFn: (data) => {
 
-                const authName = "65d6e54dd2d038abc102b4b2";
-                const authPass = "897cf996-ec96-4707-9c4d-2f25d64565be";
-                const base64Credentials = btoa(authName + ':' + authPass);
                 console.log('sending data', data);
 
-                return axios.post('http://192.168.0.168:5000/auth/sign-in', data, {
-                    headers: {
-                        'Content-type': 'application/json',
-                        'Authorization': `Basic ${base64Credentials}`
-                    }
-                })
+                return clientAxios.post('/auth/sign-in', data)
             }
         }
     )
@@ -121,6 +114,7 @@ const page = (props: Props) => {
             grantType: 'password',
             refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTAyYmEwNDg4NjQxNzUxMDE4NmFkNmEiLCJ1c2VyVHlwZSI6ImFkbWluIiwiY2xpZW50SWQiOiI2NTAzMDdhZTNiODE0NDdlNWQ3OTM0MjUiLCJlbWFpbCI6IjZzZW5zZWV2QGdtYWlsLmNvbSIsImlhdCI6MTY5NTM1OTE3OSwiZXhwIjoxNjk1MzU5Nzc5fQ.x6tNWy3Hz1BUM_PS0jpBwSWm7RHWtNks3o-UuJCUMcI'
         }
+
         console.log('body data before mutation', bodyData);
 
 
