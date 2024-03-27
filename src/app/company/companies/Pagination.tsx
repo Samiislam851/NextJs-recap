@@ -63,7 +63,7 @@ const Pagination = ({ data, currentPage, setCurrentPage }: Props) => {
 
 
 
-                {currentPage <= 4 && totalPages.length > 4 && <>
+                {currentPage < 4 && totalPages.length > 4 && <>
 
 
                     {totalPages.slice(0, 4).map(num =>
@@ -83,7 +83,7 @@ const Pagination = ({ data, currentPage, setCurrentPage }: Props) => {
                 {/* for gt 4 */}
 
 
-                {currentPage > 4 && currentPage < totalPages.length - 2 && totalPages.length > 5 && <>
+                {currentPage >= 4 && currentPage < totalPages.length - 2 && totalPages.length > 5 && <>
 
 
 
