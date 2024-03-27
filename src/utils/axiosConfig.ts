@@ -6,6 +6,60 @@ const base64Credentials = btoa(authName + ':' + authPass);
 
 const clientAxios = axios.create({ baseURL: 'http://192.168.0.168:5000/' })
 
+
+
+
+
+
+
+
+
+const refreshToken = async () => {
+    const token = localStorage.getItem('basic-login-refresh-token')
+
+
+
+
+    if (token) {
+
+
+
+        try {
+
+            const response = await clientAxios.post('/auth/sign-in', {
+                refreshToken: token,
+
+                grantType: 'refreshToken',
+            })
+
+
+            return response
+
+
+        } catch (error) {
+
+            console.log('error from refresh token function');
+
+            return error
+        }
+
+
+    }
+    return { error: { message: 'token is empty' } }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 clientAxios.interceptors.request.use((request) => {
 
     const token = localStorage.getItem('basic-login')
@@ -34,8 +88,36 @@ clientAxios.interceptors.response.use((res) => {
     return res
 },
     async (error) => {
-        if (error.status == 401) {
-            console.log('401 error encountered', error);
+
+
+
+        if (error.response.data.status === 401 && !error.config.url.includes('sign-in')) {
+
+            console.log('error config.................', error.config);
+
+            try {
+
+                const newInstance = await refreshToken();
+
+
+                console.log('new Instance', newInstance);
+
+
+                if (newInstance) {
+
+
+                }
+
+
+
+            } catch (error) {
+
+            }
+
+
+
+
+
         }
     }
 

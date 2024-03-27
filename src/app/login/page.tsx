@@ -125,6 +125,7 @@ const page = (props: Props) => {
                     console.log('success data ', data);
 
                     localStorage.setItem('basic-login', data?.data.auth.accessToken)
+                    localStorage.setItem('basic-login-refresh-token', data?.data.auth.refreshToken)
 
                     dispatch(userLoggedIn(data.data.user))
 
