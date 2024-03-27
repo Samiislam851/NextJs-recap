@@ -1,10 +1,13 @@
 'use client'
 
-import { HouseSimple, Buildings, ShoppingCart, Money, UserCircle, ClipboardText } from '@phosphor-icons/react'
+import { HouseSimple, Buildings, ShoppingCart, Money, UserCircle, ClipboardText, SignOut } from '@phosphor-icons/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import NavLink from '../Navlink/page'
+import { useDispatch } from 'react-redux'
+import { logOutAction } from '@/features/userSlice'
+import { persistor } from '@/store/store'
 
 
 
@@ -13,7 +16,7 @@ import NavLink from '../Navlink/page'
 const Sidebar = () => {
 
     const iconSize = 22
-
+    const dispatch = useDispatch()
     const basicOptions = [
         {
             title: 'Overview',
@@ -80,11 +83,21 @@ const Sidebar = () => {
     ];
 
 
+    const handleLogout = () => {
+
+        localStorage.removeItem('basic-login')
+
+        dispatch(logOutAction())
+
+
+        persistor.purge()
+    }
+
 
 
 
     return (
-        <div className='border px-10 py-5 min-h-screen'>
+        <div className='border px-10 py-5 min-h-screen flex flex-col justify-between'>
             <div className='w-fit mx-auto'>
                 <Image src={'/Main_Logo_1.png'} height={70} width={150} alt='Logo' />
             </div>
@@ -95,7 +108,6 @@ const Sidebar = () => {
             <div className='flex flex-col items-start  gap-2 py-5 w-full '>
                 {basicOptions.map((option, i) =>
                     <NavLink key={i} href={option.link} icon={option.icon} >
-
                         {option.title}
                     </NavLink>
 
@@ -109,7 +121,19 @@ const Sidebar = () => {
 
 
 
+            <div>
+                <button
+                    className='flex items-center text-red-500  flex gap-3 border border-gray-300 px-5 py-2 rounded-lg shadow hover:border-red-500 hover:border-opacity-70 transition-all duration-300 hover:shadow-lg'
+                    onClick={handleLogout}
 
+                >
+
+
+                    <span >Logout</span>
+
+                    <SignOut size={20} />
+                </button>
+            </div>
 
 
         </div>

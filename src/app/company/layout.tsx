@@ -1,7 +1,9 @@
 'use client'
 import Sidebar from '@/components/Sidebar/Sidebar'
+import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { ReactNode, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 
 type Props = {
     children: ReactNode
@@ -10,18 +12,36 @@ type Props = {
 const Layout = ({ children }: Props) => {
     const router = useRouter()
 
-
-
+    const user = useSelector((state: any) => state.user)
 
     useEffect(() => {
 
         const userState = localStorage.getItem('basic-login')
-        if (!userState) {
+        if (!userState || !user) {
 
             router.push('/login')
 
         }
+        
+    }, [user])
+
+
+    //@ts-ignore
+    axios.interceptors.request.use((request) => {
+
+
+        const token = localStorage.getItem('basic-login')
+
+        if (token) {
+            request.headers.Authorization = `Bearer ${token}`
+        }
+
     })
+
+
+
+
+
 
     return (
         <>

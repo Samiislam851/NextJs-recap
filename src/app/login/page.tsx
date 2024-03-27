@@ -134,8 +134,8 @@ const page = (props: Props) => {
 
                     dispatch(userLoggedIn(data.data.user))
 
-
                 },
+
                 onError: (err) => console.log(err)
 
             })
