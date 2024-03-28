@@ -51,35 +51,20 @@ const Sidebar = () => {
     ];
     const resourcesOptions = [
         {
-            title: 'Overview',
-            icon: <HouseSimple size={iconSize} />,
-            link: '/company/overview'
-        },
-        {
-            title: 'Companies',
-            icon: <Buildings size={iconSize} />,
-            link: '/company/companies'
-        },
-        {
-            title: 'Products',
-            icon: <ShoppingCart size={iconSize} />,
-            link: '/company/products'
-        },
-        {
-            title: 'Financial',
-            icon: <Money size={iconSize} />,
-            link: '/company/financial'
-        },
-        {
-            title: 'Reports',
-            icon: <ClipboardText size={iconSize} />,
-            link: '/company/reports'
-        },
-        {
-            title: 'Users',
+            title: 'Roles',
             icon: <UserCircle size={iconSize} />,
-            link: '/company/users'
+            link: '/company/roles'
         },
+        {
+            title: 'Team',
+            icon: <Buildings size={iconSize} />,
+            link: '/company/Team'
+        },
+        {
+            title: 'Rate',
+            icon: <ShoppingCart size={iconSize} />,
+            link: '/company/Rate'
+        }
     ];
 
 

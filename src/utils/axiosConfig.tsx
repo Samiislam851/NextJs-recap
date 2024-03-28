@@ -36,7 +36,6 @@ const useAxiosConfig = () => {
         if (token) {
             const response = await clientAxios.post('/auth/sign-in', {
                 refreshToken: token,
-
                 grantType: 'refreshToken',
             })
             return response
