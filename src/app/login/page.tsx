@@ -1,6 +1,7 @@
 'use client'
 
 import { userLoggedIn } from '@/features/userSlice'
+import useAxiosConfig from '@/utils/axiosConfig'
 import clientAxios from '@/utils/axiosConfig'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -25,6 +26,7 @@ type FormData = {
 
 
 const page = (props: Props) => {
+    const clientAxios = useAxiosConfig()
 
     const router = useRouter()
     const [showPassword, setShowPassword] = useState<boolean>(false);

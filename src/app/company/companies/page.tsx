@@ -13,12 +13,13 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import Pagination from './Pagination';
 import { useSelector } from 'react-redux';
-import clientAxios from '@/utils/axiosConfig';
+import useAxiosConfig from '@/utils/axiosConfig';
+// import clientAxios from '@/utils/axiosConfig';
 
 type Props = {}
 
 const Companies = (props: Props) => {
-
+    const clientAxios = useAxiosConfig()
     const { register, handleSubmit } = useForm();
     const searchParams = useSearchParams()
     const router = useRouter();

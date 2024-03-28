@@ -14,7 +14,9 @@ const userSlice = createSlice({
             state.user = action.payload
         },
         logOutAction: (state) => {
-            state.user = null
+            state.user = null;
+            localStorage.setItem('basic-login', '')
+            localStorage.setItem('basic-login-refresh-token', '')
         }
     },
 
