@@ -33,49 +33,16 @@ const useAxiosConfig = () => {
 
         const token = localStorage.getItem('basic-login-refresh-token')
 
-        console.log('inside refresh func');
-
         if (token) {
+            const response = await clientAxios.post('/auth/sign-in', {
+                refreshToken: token,
 
-
-
-            try {
-
-                const response = await clientAxios.post('/auth/sign-in', {
-                    refreshToken: token,
-
-                    grantType: 'refreshToken',
-                })
-
-
-                return response
-
-
-            } catch (error) {
-
-                console.log('error from refresh token req function');
-
-
-                dispatch(logOutAction())
-
-
-                return error
-            }
-
-
+                grantType: 'refreshToken',
+            })
+            return response
         }
         return { error: { message: 'token is empty' } }
-
-
     }
-
-
-
-
-
-
-
-
 
 
 
@@ -98,8 +65,6 @@ const useAxiosConfig = () => {
         return request
 
     })
-
-
 
 
 
@@ -127,18 +92,16 @@ const useAxiosConfig = () => {
                         localStorage.setItem('basic-login-refresh-token', newInstance?.data.auth.refreshToken)
                         console.log('new user instance', newInstance?.data?.user);
                         dispatch(userLoggedIn(newInstance?.data?.user))
+                    } else {
+                        dispatch(logOutAction())
                     }
 
 
                 } catch (error) {
 
+                    console.log('the error from axios config');
 
                 }
-
-
-
-
-
             }
         }
 

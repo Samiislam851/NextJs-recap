@@ -118,7 +118,14 @@ const Sidebar = () => {
 
             {/* Resources */}
             <p className='text-gray-400 font-medium pb-5'>Resources</p>
+            <div className='flex flex-col items-start  gap-2 py-5 w-full '>
+                {resourcesOptions.map((option, i) =>
+                    <NavLink key={i} href={option.link} icon={option.icon} >
+                        {option.title}
+                    </NavLink>
+                )}
 
+            </div>
 
 
             <div>
