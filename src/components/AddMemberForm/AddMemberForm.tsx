@@ -1,4 +1,5 @@
 'use client'
+
 import { PlusCircle, Trash, Warning, X } from '@phosphor-icons/react'
 import React, { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
@@ -9,6 +10,10 @@ import clsx from 'clsx'
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import './AddMember.css'
+import AsyncSelect from 'react-select/async';
+import makeAnimated from 'react-select/animated';
+import useAxiosConfig from '@/utils/axiosConfig'
+
 
 type Props = {
     setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>,
@@ -17,22 +22,29 @@ type Props = {
 }
 
 const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
+    const clientAxios = useAxiosConfig()
 
+
+    const roleSchema = z.object({
+        value: z.string(),
+        label: z.string()
+    })
 
 
     const memberSchema = z.object({
         name: z.string().nonempty({ message: 'Member name is required' }),
         email: z.string().nonempty({ message: 'Email address is required' }).email({ message: 'this input should be an email' }),
-        phone: z.string()
+        phone: z.string(),
+        role: z.array(roleSchema)
     })
 
     const schema = z.object({
         members: z.array(memberSchema)
     })
 
-    const { control, register, handleSubmit, reset, formState: { errors } } = useForm({
+    const { control, register, setValue, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
-            members: [{ name: '', email: '', phone: '' }]
+            members: [{ name: '', email: '', phone: '', role: [{ name: '', value: '' }] }]
         },
         resolver: zodResolver(schema)
     });
@@ -48,10 +60,23 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
     }
 
+    const loadOptions = async (inputValue: any) => {
+        console.log(inputValue);
 
+        console.log('inside load options');
+
+
+        const response = await clientAxios.get(`http://192.168.0.168:5000/employee-role/list/dropdown`);
+
+        console.log(response);
+        const mapped = response.data.map((option: any) => ({ value: option._id, label: option.name }))
+
+        console.log('mapped', mapped);
+        return mapped
+    }
     console.log('errors', errors);
 
-
+    const animatedComponents = makeAnimated();
 
     return (
         <div className='relative  border max-w-lg h-screen overflow-y-auto '>
@@ -115,13 +140,14 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
                                     <div className=" flex items-center space-x-3">
                                         <input
-                                            type="text"
+                                           
                                             className={clsx(
                                                 'flex-grow bg-white rounded-md border focus:outline-none px-2 text-sm py-1',
                                                 { 'border-red-500': errors && errors?.members && errors?.members[index] && errors?.members[index].email })}
 
                                             {...register(`members.${index}.email`)}
                                             defaultValue={item.email}
+                                           
                                         />
 
 
@@ -156,19 +182,17 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                                                     'flex-grow bg-white rounded-md border focus:outline-none px-2 text-sm py-1 w-[200px]',
                                                     { 'border-red-500': errors && errors?.members && errors?.members[index] && errors?.members[index].phone }
                                                 )}
+
+                                                // country={'us'}
+
+                                                placeholder='000 000 0000'
                                                 inputStyle={{ width: '300px' }}
                                                 inputProps={{
                                                     name: `members.${index}.phone`,
                                                     autoFocus: true
                                                 }}
-                                                value={item.phone}
-                                     
 
-                                                onChange={(e)=> console.log(e?.target?.value)
-                                                }
-
-                                                
-                                                countryCodeEditable={false}
+                                                onChange={(e) => setValue(`members.${index}.phone`, e)}
 
                                             />
 
@@ -196,10 +220,53 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                                 </div>
                             </div>
 
+
+
+                            <div className="flex items-start space-x-3 pb-3">
+
+                                <label className="w-1/3 pt-1" htmlFor={`members.${index}.name`}>
+                                    Phone Number
+                                </label>
+
+                                <div className='w-2/3 flex flex-col'>
+
+                                    <div className=" flex items-center space-x-3">
+                                        <div className=''>
+
+                                            <AsyncSelect
+                                                className='w-[260px]'
+                                                loadOptions={loadOptions}
+                                                // @ts-ignore
+                                                onChange={(e) => setValue(`members.${index}.role`, e)}
+                                                isMulti
+                                                placeholder='Select Role'
+                                                components={animatedComponents}
+                                                defaultOptions
+                                            />
+
+                                        </div>
+
+
+
+
+
+                                    </div>
+
+                                    {errors && errors.members && errors.members[index] && errors.members[index].email &&
+                                        (
+                                            <span className="text-red-500 text-xs pt-1 flex gap-1 font-bold">
+                                                <Warning size={14} weight="bold" /> <span>
+                                                    {errors.members[index].email.message}
+                                                </span>
+                                            </span>
+                                        )}
+                                </div>
+                            </div>
+
                         </div>
                     ))}
                     <button type='button' className="button text-gray-600 flex items-center justify-center gap-2"
-                        onClick={() => append({ name: '', email: '', phone: '' })}>
+                        onClick={() => append({ name: '', email: '', phone: '', role: [{ value: '', name: '' }] })}>
                         <PlusCircle size={20} weight="bold" />
                         <span>  Add More </span>
                     </button>
