@@ -18,7 +18,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
     const roleSchema = z.object({
         name: z.string().min(3).max(40).nonempty(),
-        details: z.string().min(10).max(250).nonempty()
+        details: z.string().max(250)
     })
 
     const schema = z.object({

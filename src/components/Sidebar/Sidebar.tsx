@@ -58,7 +58,7 @@ const Sidebar = () => {
         {
             title: 'Team',
             icon: <Buildings size={iconSize} />,
-            link: '/company/Team'
+            link: '/company/team'
         },
         {
             title: 'Rate',
