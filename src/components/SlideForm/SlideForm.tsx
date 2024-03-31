@@ -17,7 +17,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
 
     const roleSchema = z.object({
-        name: z.string().min(3).max(40).nonempty(),
+        name: z.string().nonempty({message:'this should not be empty'}).min(3).max(40),
         details: z.string().max(250)
     })
 

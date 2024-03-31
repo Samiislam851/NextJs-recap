@@ -25,17 +25,13 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
     const clientAxios = useAxiosConfig()
 
 
-    const roleSchema = z.object({
-        value: z.string(),
-        label: z.string()
-    })
 
 
     const memberSchema = z.object({
         name: z.string().nonempty({ message: 'Member name is required' }),
         email: z.string().nonempty({ message: 'Email address is required' }).email({ message: 'this input should be an email' }),
         phone: z.string(),
-        role: z.array(roleSchema)
+        role: z.array(z.string()).nonempty({ message: 'Role is required' })
     })
 
     const schema = z.object({
@@ -44,7 +40,7 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
     const { control, register, setValue, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
-            members: [{ name: '', email: '', phone: '', role: [{ name: '', value: '' }] }]
+            members: [{ name: '', email: '', phone: '', role: [] }]
         },
         resolver: zodResolver(schema)
     });
@@ -57,7 +53,6 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
     const onSubmit = (data: any) => {
         console.log(data);
-
     }
 
     const loadOptions = async (inputValue: any) => {
@@ -131,6 +126,13 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                                         )}
                                 </div>
                             </div>
+
+
+
+
+
+
+                            {/* ------------------- Email ------------------------ */}
                             <div className="flex items-start space-x-3 pb-3">
 
                                 <label className="w-1/3 pt-1" htmlFor={`members.${index}.name`}>Email Address<span className="text-red-500">*</span>
@@ -140,14 +142,14 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
                                     <div className=" flex items-center space-x-3">
                                         <input
-                                           
+
                                             className={clsx(
                                                 'flex-grow bg-white rounded-md border focus:outline-none px-2 text-sm py-1',
                                                 { 'border-red-500': errors && errors?.members && errors?.members[index] && errors?.members[index].email })}
 
                                             {...register(`members.${index}.email`)}
                                             defaultValue={item.email}
-                                           
+
                                         />
 
 
@@ -166,6 +168,11 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                                         )}
                                 </div>
                             </div>
+
+
+
+                            {/* ------------------- Phone number ------------------------ */}
+
                             <div className="flex items-start space-x-3 pb-3">
 
                                 <label className="w-1/3 pt-1" htmlFor={`members.${index}.name`}>
@@ -189,7 +196,7 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                                                 inputStyle={{ width: '300px' }}
                                                 inputProps={{
                                                     name: `members.${index}.phone`,
-                                                    autoFocus: true
+
                                                 }}
 
                                                 onChange={(e) => setValue(`members.${index}.phone`, e)}
@@ -200,23 +207,12 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
 
 
-                                        {index > 0 && (
-                                            <button type="button" onClick={() => remove(index)}>
-                                                <Trash size={20} className='text-red-500' weight="bold" />
-                                            </button>
-                                        )}
+
 
 
                                     </div>
 
-                                    {errors && errors.members && errors.members[index] && errors.members[index].email &&
-                                        (
-                                            <span className="text-red-500 text-xs pt-1 flex gap-1 font-bold">
-                                                <Warning size={14} weight="bold" /> <span>
-                                                    {errors.members[index].email.message}
-                                                </span>
-                                            </span>
-                                        )}
+
                                 </div>
                             </div>
 
@@ -225,7 +221,7 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                             <div className="flex items-start space-x-3 pb-3">
 
                                 <label className="w-1/3 pt-1" htmlFor={`members.${index}.name`}>
-                                    Phone Number
+                                    Select Roles <span className='text-red-500'>*</span>
                                 </label>
 
                                 <div className='w-2/3 flex flex-col'>
@@ -234,10 +230,22 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                                         <div className=''>
 
                                             <AsyncSelect
-                                                className='w-[260px]'
+                                                className={clsx('w-[260px]',
+                                                {'border border-red-500 rounded-md ': errors && errors.members && errors.members[index] && errors.members[index].role})}
                                                 loadOptions={loadOptions}
                                                 // @ts-ignore
-                                                onChange={(e) => setValue(`members.${index}.role`, e)}
+                                                onChange={(e) => {
+
+                                                    const ids = e.map((data: any) => data.value)
+                                                    //@ts-ignore
+                                                    setValue(`members.${index}.role`, ids, { shouldValidate: true })
+
+                                                }
+
+                                                }
+
+
+
                                                 isMulti
                                                 placeholder='Select Role'
                                                 components={animatedComponents}
@@ -252,21 +260,23 @@ const AddMemberForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
                                     </div>
 
-                                    {errors && errors.members && errors.members[index] && errors.members[index].email &&
-                                        (
+                                    {errors && errors.members && errors.members[index] && errors.members[index].role
+                                        &&
+                                        ( // Check if role array is empty
                                             <span className="text-red-500 text-xs pt-1 flex gap-1 font-bold">
                                                 <Warning size={14} weight="bold" /> <span>
-                                                    {errors.members[index].email.message}
+                                                    {errors.members[index].role.message}
                                                 </span>
                                             </span>
-                                        )}
+                                        )
+                                    }
                                 </div>
                             </div>
 
                         </div>
                     ))}
                     <button type='button' className="button text-gray-600 flex items-center justify-center gap-2"
-                        onClick={() => append({ name: '', email: '', phone: '', role: [{ value: '', name: '' }] })}>
+                        onClick={() => append({ name: '', email: '', phone: '', role: [] })}>
                         <PlusCircle size={20} weight="bold" />
                         <span>  Add More </span>
                     </button>
