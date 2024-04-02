@@ -82,7 +82,7 @@ const Sidebar = () => {
 
 
     return (
-        <div className='border px-10 py-5 min-h-screen flex flex-col justify-between'>
+        <div className='border px-10 py-5 min-h-screen flex flex-col justify-between bg-[#FAFBFC]'>
             <div className='w-fit mx-auto'>
                 <Image src={'/Main_Logo_1.png'} height={70} width={150} alt='Logo' />
             </div>
