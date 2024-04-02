@@ -40,9 +40,6 @@ const Companies = (props: Props) => {
     const { data, isError, isFetching, refetch } = useQuery<TableDataType, Error, TableDataType>({
         queryKey: ['users'],
         queryFn: () => {
-
-
-
             return clientAxios.get(`company/list?page=${currentPage}&size=${pageSize}&query=${searchTerm}`)
         }
     })
@@ -59,10 +56,7 @@ const Companies = (props: Props) => {
     console.log(data, isError, isFetching);
 
     useEffect(() => {
-
         router.push(`/company/companies?page=${currentPage}&size=${pageSize}&query=${searchTerm}`)
-
-
         refetch()
     }, [currentPage, searchTerm])
 

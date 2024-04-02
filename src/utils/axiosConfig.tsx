@@ -72,7 +72,7 @@ const useAxiosConfig = () => {
     },
         async (error) => {
 
-            if (error.response.data.status == 401 && !error.config.url.includes('sign-in')) {
+            if (error?.response?.data?.status == 401 && !error.config.url.includes('sign-in')) {
 
                 console.log('error config.................', error.config);
 

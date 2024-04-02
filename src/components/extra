@@ -1,0 +1,101 @@
+// 'use client'
+// import useAxiosConfig from '@/utils/axiosConfig'
+// import { useInfiniteQuery } from '@tanstack/react-query'
+// import React, { useState } from 'react'
+// import InfiniteScroll from 'react-infinite-scroll-component';
+// type Props = {}
+
+
+
+
+
+// const ScrollCompanies = (props: Props) => {
+// const [page, setPage] = useState(1)
+
+//     const clientAxios = useAxiosConfig()
+//     const pageSize = 10
+//     // const queryFn = async ({ pageParam = 1 }) => {
+//     //     const response = await clientAxios.get(`company/list?page=${pageParam}&size=${pageSize}&query=`)
+//     //     const data = response.data
+//     //     return { ...data, prevOffset: pageParam }
+//     // }
+
+//     // console.log(queryFn({ pageParam: 1 }));
+
+
+//     const {
+//         fetchNextPage,
+//         fetchPreviousPage,
+//         hasNextPage,
+//         hasPreviousPage,
+//         isFetchingNextPage,
+//         isFetchingPreviousPage,
+//         data
+//     } = useInfiniteQuery({
+//         queryKey: ['users'],
+//         queryFn: async ({ pageParam = 1 }) => {
+
+//             console.log('page param from queryFN ..............', pageParam);
+    
+//             const response = await clientAxios.get(`company/list?page=${pageParam}&size=${pageSize}&query=`)
+//             const data = response.data
+//             return { ...data, prevOffset: pageParam }
+//         } ,
+
+//         getNextPageParam: (lastPage, pages) => {
+//             // if (lastPage.prevOffset + 10 > lastPage.articleCount) {
+//             //     return false
+//             // }
+
+//             console.log('increasing lastPage offset...............', lastPage)
+//             const count = lastPage.prevOffset + 1
+//             console.log('count.............', count);
+//             // setPage(count)
+
+//             return pages.length +1 
+//         },
+
+//         initialPageParam: 1
+//     })
+
+
+
+//     console.log('data', data, 'Has nextPage', hasNextPage, 'hasPreviousPage', hasPreviousPage);
+
+
+
+//     return (
+//         <div>
+
+//             <h3 className='text-center py-10'>ScrollCompanies</h3>
+
+
+//             <InfiniteScroll
+//                 dataLength={200}
+//                 next={() => fetchNextPage()}
+//                 hasMore={true}
+//                 loader={<div>Loading...</div>}
+//             >
+
+//                 <div>
+//                     kk{data && data.pages.map((page, i) => <>
+//                         pageNo {i}
+//                         <div key={i}>
+
+//                             {data && data.pages[i].data.map((data: any) =>
+//                                 <div key={data._id} className='p-5 border border-3 w-fit my-5 rounded'>
+
+//                                     <h3>{data.name}</h3>
+//                                 </div>)}
+//                         </div>
+
+//                     </>)}
+
+//                 </div>
+
+//             </InfiniteScroll>
+//         </div>
+//     )
+// }
+
+// export default ScrollCompanies
