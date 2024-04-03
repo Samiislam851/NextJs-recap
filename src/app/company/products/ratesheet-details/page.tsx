@@ -4,7 +4,7 @@ import CvaButton from '@/components/UI/CvaButton';
 import { AddressBook, Calendar, CalendarBlank, CaretRight, MagnifyingGlass, PencilSimpleLine } from '@phosphor-icons/react'
 import React, { useState } from 'react'
 import { RxCaretRight } from "react-icons/rx";
-// @ts-ignore
+
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
 import "react-datepicker/dist/react-datepicker.css";
@@ -116,7 +116,7 @@ const Details = (props: Props) => {
 
                         </div>
                         <div>
-                            <Link href={'/company/products/details/update'}>
+                            <Link href={'/company/products/ratesheet-details/update'}>
 
                                 <CvaButton intent='primary' type='button' size='medium' animate > <span className='flex gap-1'>
 

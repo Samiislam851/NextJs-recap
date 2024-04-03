@@ -11,15 +11,8 @@ type Props = {}
 
 const Update = (props: Props) => {
 
-
-
-
-
-
-
     const [startDate, setStartDate] = useState(null);
-
-
+    const [startDate2, setStartDate2] = useState(null);
 
     const options = [
         { value: 'RateSheet1', label: 'RateSheet1' },
@@ -130,7 +123,7 @@ const Update = (props: Props) => {
                                 <div className=' w-[80%]  bg-white flex items-center py-[6px] gap-2 border border-gray-300 rounded p-1 '>
                                     <CalendarBlank size={20} />
                                     <DatePicker
-                                        className='focus:outline-none focus:border-none bg-white w-[30px]'
+                                        className='focus:outline-none focus:border-none bg-white w-[300px]'
                                         placeholderText={`Pick a start date`}
                                         selected={startDate} onChange={(date: any) => {
                                             return setStartDate(prev => date)
@@ -147,8 +140,8 @@ const Update = (props: Props) => {
                                     <DatePicker
                                         className='focus:outline-none focus:border-none'
                                         placeholderText={`Pick an end date`}
-                                        selected={startDate} onChange={(date: any) => {
-                                            return setStartDate(prev => date)
+                                        selected={startDate2} onChange={(date: any) => {
+                                            return setStartDate2(prev => date)
                                         }} />
 
                                 </div>

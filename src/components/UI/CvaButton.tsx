@@ -19,17 +19,17 @@ interface ButtonProps {
 
 
 const button = cva(
-    ['border', 'rounded'],
+    ['border', 'rounded-md'],
     {
         variants: {
             intent: {
                 primary: ['bg-blue-600', 'border-transparent', 'text-white'],
                 secondary: ['bg-gray-100', ' hover:bg-red-500 hover:text-white', 'text-gray-700 font-medium'],
-                plain: ['bg-gray-100', '  hover:shadow-lg', 'text-gray-700 font-medium']
+                plain: ['bg-gray-100', '  hover:bg-blue-500 hover:text-white', 'text-gray-700 font-medium']
             },
             size: {
                 small: ['text-sm', 'py-1', 'px-2'],
-                medium: ['text-sm', 'py-1', 'px-4']
+                medium: ['text-sm', 'py-[.4rem]', 'px-4']
             },
         },
 
@@ -48,10 +48,10 @@ const CvaButton = ({ onClick, className, type, children, intent, size, disabled 
         className={
             clsx(dynamicClasses, className, 'flex gap-2 items-center justify-center',
                 { "cursor-not-allowed bg-gray-400": disabled === true },
-                { "transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105": animate === true })} >
+                { "transition-all duration-300 ease-in-out ": animate === true })} >
 
-        {plusIcon && <PlusCircle size={25} />}
-        <span>{children}</span>
+        {plusIcon && <PlusCircle size={20} />}
+        <span className={clsx({'ps-1': plusIcon})}>{children}</span>
     </button>
 
 }
