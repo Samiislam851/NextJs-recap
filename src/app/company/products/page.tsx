@@ -12,6 +12,8 @@ const Products = (props: Props) => {
         <Link href='/company/products/ratesheet-details' ><CvaButton intent='primary' animate size='medium'> Details </CvaButton></Link>
         <div className='p-5'></div>
         <Link href='/company/products/primaryDetails' ><CvaButton intent='primary' animate size='medium'> Details2 </CvaButton></Link>
+        <div className='p-5'></div>
+        <Link href='/company/products/create-product' ><CvaButton intent='primary' animate size='medium'> Create Product </CvaButton></Link>
       </div>
 
     </div>
