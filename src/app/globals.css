@@ -16,3 +16,11 @@
     display: none
 }
 
+.react-tel-input .form-control {
+    margin-left: 25px;
+    width: 100% !important;
+}
+
+.react-tel-input .selected-flag {
+    background-color: white;
+}

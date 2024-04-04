@@ -122,22 +122,22 @@ const Companies = (props: Props) => {
 
                     <div className='grid grid-cols-6 text-start pt-3'>
                         <div className="flex flex-col justify-start items-center w-full ">
-                            <div className={headerClasses}>Company</div>
+                            <div className={headerClasses}> Company </div>
                         </div>
                         <div className="flex flex-col justify-start items-center w-full ">
-                            <div className={headerClasses}>Phone</div>
+                            <div className={headerClasses}> Phone </div>
                         </div>
                         <div className="flex flex-col justify-start items-center w-full ">
-                            <div className={headerClasses}>Email</div>
+                            <div className={headerClasses}> Email </div>
                         </div>
                         <div className="flex flex-col justify-start items-center w-full ">
-                            <div className={headerClasses}>Location</div>
+                            <div className={headerClasses}> Location </div>
                         </div>
                         <div className="flex flex-col justify-start items-center w-full ">
-                            <div className={headerClasses}>Products</div>
+                            <div className={headerClasses}> Products </div>
                         </div>
                         <div className="flex flex-col justify-start items-center w-full ">
-                            <div className={headerClasses}>Action</div>
+                            <div className={headerClasses}> Action </div>
                         </div>
                     </div>
 

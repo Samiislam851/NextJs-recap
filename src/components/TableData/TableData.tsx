@@ -1,4 +1,5 @@
 import { User } from '@phosphor-icons/react'
+import Link from 'next/link'
 import React from 'react'
 
 type Props = {
@@ -29,10 +30,10 @@ const TableData = ({ companyData }: Props) => {
                 <div className={headerClasses}>{companyData.addresses.addressLine}</div>
             </div>
             <div className={classes}>
-                <div className={headerClasses + 'flex gap-1'}>  <User size={20} />   1</div>
+                <div className={headerClasses + 'flex gap-1'}>  <User size={20} /> 1</div>
             </div>
             <div className={classes}>
-                <div className={headerClasses}>Details</div>
+                <div className={headerClasses}> <Link href={`companies/edit/${companyData._id}`}>Edit</Link> </div>
             </div>
         </div>
 
