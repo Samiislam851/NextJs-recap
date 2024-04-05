@@ -10,7 +10,7 @@ type Props = {}
 
 const page = (props: Props) => {
     return (
-        <div className='text-gray-700'>
+        <div className='text-gray-700 pb-10'>
             <div className='flex justify-between p-7'>
                 <div className='space-y-2'>
                     <div className='flex gap-2 text-gray-400 text-sm font-semibold'>

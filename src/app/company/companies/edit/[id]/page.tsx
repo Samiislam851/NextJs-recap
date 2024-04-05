@@ -191,6 +191,8 @@ const Page = (props: Props) => {
                                         />
                                     )}
                                 />
+
+                                {/* @ts-ignore*/}
                                 {errors.phone && errors.phone.message && <p className="text-red-500">{errors?.phone?.message}</p>}
                             </div>
                         </div>
