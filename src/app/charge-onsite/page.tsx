@@ -44,11 +44,15 @@ const page = (props: Props) => {
 
             <div className='flex items-center justify-between text-lg font-roboto  pb-2'>
               <div className='flex  gap-2  items-center'>
+                
                 <h3 className='font-bold'>
                   {card.name}
                 </h3>
+
+
                 <div className='flex items-center gap-[6px]'>
                   <div className='w-[1px] h-[9px] bg-[#D9D9D9]'></div>
+                  
                   <p className={clsx(' text-xs  font-semibold ',
 
                     { 'text-[#FF2C2C]': card.inUse },
@@ -62,12 +66,13 @@ const page = (props: Props) => {
               </div>
 
               <div>
-                <input disabled={card.inUse || selectedCard !== null && selectedCard !== card.id}
+                <input
+                  // disabled={card.inUse || selectedCard !== null && selectedCard !== card.id}
                   type="radio"
                   className="accent-[#115955]"
-                  checked={card.inUse ? false : selectedCard === card.id}
-                  onChange={() => !card.inUse?? setSelectedCard(card.id)}
-
+                  checked={selectedCard === card.id && true}
+                  onChange={() => !card.inUse ?? setSelectedCard(card.id)}
+                // disabled={card.inUse || (selectedCard !== null && selectedCard !== card.id)}
                 />
               </div>
 
@@ -141,7 +146,7 @@ const page = (props: Props) => {
 
 
       <div>
-        <button onClick={() => console.log(selectedCard)
+        <button onClick={() => selectedCard ? console.log(selectedCard) : alert('please select a card')
         } className='w-full rounded bg-[#115955] text-white uppercase p-2'>Confirm</button>
       </div>
 
