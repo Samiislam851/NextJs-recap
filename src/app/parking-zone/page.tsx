@@ -136,73 +136,110 @@ const page = (props: Props) => {
       <div className='bg-[#F9F9F9] min-h-screen px-5'>
 
 
-        {locations.map(location => <div key={location.id} className='py-4'>
-          <h3 className='font-semibold text-[#115955] pb-2 '>{location.locationName} </h3>
+        {locations.map(location =>
+          <div key={location.id} className='py-4'>
+            <h3 className='font-semibold text-[#115955] pb-2 '>{location.locationName} </h3>
 
-          <div className='grid grid-cols-2 gap-y-2 bg-white py-3 px-12'>
-            {location && location?.chargers?.map((charger: any, idx: number) =>
-
-
-
-              <div key={charger.id}>
-                <div className='flex gap-1 items-start font-medium px-2'>
-
-                  <ChargingStation className={clsx(
-                    charger.plugs.some((plug: any) => plug.availability === 'available') && 'text-green-500',
-                    !charger.plugs.some((plug: any) => plug.availability === 'available') && charger.plugs.some((plug: any) => plug.availability === 'inUse') && 'text-blue-500',
-                    !charger.plugs.some((plug: any) => plug.availability === 'available' || plug.availability === 'inUse') && 'text-red-500'
-                  )} size={16} weight="fill" />
+            <div className='grid grid-cols-2 gap-y-8 bg-white py-3 px-12'>
+              {location && location?.chargers?.map((charger: any, idx: number) =>
 
 
-                  <h3 className='text-sm'>{charger.chargerName}</h3>
-                </div>
 
-                <div className={clsx('mx-12 flex flex-col border-t-[2px] border-b-[2px] border-dashed  border-gray-400',
+                <div key={charger.id}>
 
-                  { 'border-r-[2px] ': idx % 2 == 0 },
-                  { 'border-l-[2px]': idx % 2 !== 0 }
-                )}>
-                  {charger.plugs.map((plug: any, plugIdx: number) =>
-                    <div className={clsx('h-[96px]',
-                      { 'border-t-[2px] border-dashed border-gray-400': plugIdx > 0 }
+                  <div className='flex gap-1 items-start font-medium px-2'>
+
+                    <ChargingStation className={clsx(
+                      charger.plugs.some((plug: any) => plug.availability === 'available') && 'text-green-500',
+                      !charger.plugs.some((plug: any) => plug.availability === 'available') && charger.plugs.some((plug: any) => plug.availability === 'inUse') && 'text-blue-500',
+                      !charger.plugs.some((plug: any) => plug.availability === 'available' || plug.availability === 'inUse') && 'text-red-500'
+                    )} size={16} weight="fill" />
 
 
-                    )}>
+                    <h3 className='text-sm'>{charger.chargerName}</h3>
+                  </div>
 
-                      <div className='flex items-center gap-[6px]'>
+                  <div className={clsx('mx-12 flex flex-col border-t-[2px] border-b-[2px] border-dashed  border-gray-400',
 
-                        <div className={clsx(`w-1 h-1 rounded-full `,
-                          { 'bg-[#FF2C2C]': plug.availability === 'down' },
-                          { 'bg-[#6BBE00]': plug.availability === 'available' },
-                          { 'bg-[#3BA0FF]': plug.availability === 'inUse' }
-                        )}>
-                          
+                    { 'border-r-[2px] ': idx % 2 == 0 },
+                    { 'border-l-[2px]': idx % 2 !== 0 }
+                  )}>
+
+
+
+
+
+
+
+
+
+
+
+                    {charger.plugs.map((plug: any, plugIdx: number) =>
+
+
+                      <div key={plug.id} className={clsx('min-h-[100px] py-2 flex flex-col justify-end ',
+                        { 'border-t-[2px] border-dashed border-gray-400': plugIdx > 0 }
+
+
+                      )}>
+
+
+
+
+                        {plug?.availability === 'inUse' && <div className='px-2'>
+
+                          <img src="/car.png" className={clsx('w-full',
+                            { 'rotate-180': idx % 2 !== 0 }
+                          )} alt="" />
+                        </div>}
+
+
+                        <div className='flex items-center gap-[6px]'>
+
+                          <div className={clsx(`w-1 h-1 rounded-full `,
+                            { 'bg-[#FF2C2C]': plug.availability === 'down' },
+                            { 'bg-[#6BBE00]': plug.availability === 'available' },
+                            { 'bg-[#3BA0FF]': plug.availability === 'inUse ps-1' }
+                          )}>
+
+                          </div>
+
+                          <p className={clsx(' text-xs  font-semibold capitalize ',
+
+                            { 'text-[#FF2C2C]': plug.availability === 'down' },
+                            { 'text-[#6BBE00]': plug.availability === 'available' },
+                            { 'text-[#3BA0FF]': plug.availability === 'inUse' }
+                          )}>
+                            {plug.availability}
+                          </p>
+
                         </div>
 
-                        <p className={clsx(' text-xs  font-semibold capitalize ',
+                        {plug.availability === 'available' &&
+                          <div className='flex gap-1'>
+                            <div>
+                              <img src="plugLogo.png" alt="" />
+                            </div>
 
-                          { 'text-[#FF2C2C]': plug.availability === 'down' },
-                          { 'text-[#6BBE00]': plug.availability === 'available' },
-                          { 'text-[#3BA0FF]': plug.availability === 'inUse' }
-                        )}>
-                          {plug.availability}
-                        </p>
+                            <p className='text-gray-500 text-xs'>j1772 - 9.9kW max</p>
+                          </div>
 
-                      </div>
+                        }
 
-                    </div>)}
+                      </div>)}
 
+                  </div>
                 </div>
-              </div>
 
 
-            )}
+              )}
 
-          </div>
+            </div>
 
 
 
-        </div>)}
+          </div>)}
 
 
 
