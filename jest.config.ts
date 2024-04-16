@@ -13,7 +13,6 @@ const createJestConfig = nextJest({
 
 const config: Config = {
   coverageProvider: 'babel',
-
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
