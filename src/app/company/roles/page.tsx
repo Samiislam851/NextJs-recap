@@ -8,12 +8,11 @@ import React, { useState } from 'react'
 type Props = {}
 
 const page = (props: Props) => {
-
     const [isFormOpen, setIsFormOpen] = useState(false)
 
 
     return (
-        <div className=' h-screen w-full relative'>
+        <div className='h-screen w-full relative'>
             <div
                 className={clsx('absolute w-[500px] right-[-500px] transition-all ease-in-out duration-700',
                     { 'border  translate-x-[-500px] ': isFormOpen },

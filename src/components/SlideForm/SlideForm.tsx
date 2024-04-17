@@ -51,7 +51,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
     return (
         <div className='relative  border max-w-lg h-screen overflow-y-auto p-5'>
 
-            <button onClick={() => setIsFormOpen(!isFormOpen)} className='absolute top-5 right-5 text-gray-400'>
+            <button data-testid="cancel-button" onClick={() => setIsFormOpen(!isFormOpen)} className='absolute top-5 right-5 text-gray-400'>
                 <X weight="bold" size={18} /></button>
             <h3 className='text-2xl font-bold text-gray-700'>Add Role Profile</h3>
             <p className='text-gray-400 font-medium text-sm pt-1' >Get started by filling in the information to create new role profile</p>
