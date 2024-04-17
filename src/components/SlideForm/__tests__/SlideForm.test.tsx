@@ -29,10 +29,10 @@ describe('Slide form component', () => {
 
     it('submits form with valid data', async () => {
         const mockSubmit = jest.fn();
-        render(<SlideForm setIsFormOpen={setIsFormOpenMock} isFormOpen={true} />);
+        render(<SlideForm setIsFormOpen={setIsFormOpenMock} isFormOpen={true} clickFunction={mockSubmit} />);
 
         // Simulate user input
-        await userEvent.type(screen.getByLabelText('Role Name'), 'Test name');
+        await userEvent.type(screen.getByLabelText('Role Name *'), 'Test name');
         await userEvent.type(screen.getByLabelText('Role Details'), 'Test Details');
         await userEvent.click(screen.getByText('Create'));
 

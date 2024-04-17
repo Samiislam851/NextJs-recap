@@ -8,11 +8,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 type Props = {
     setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>,
-    isFormOpen: boolean
-
+    isFormOpen: boolean,
+    clickFunction?: any
 }
 
-const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
+const SlideForm = ({ setIsFormOpen, isFormOpen, clickFunction }: Props) => {
 
 
 
@@ -40,6 +40,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
     const onSubmit = (data: any) => {
         console.log('data............', data);
+        clickFunction(data)
     }
 
 
