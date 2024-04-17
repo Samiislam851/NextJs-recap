@@ -17,7 +17,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
 
     const roleSchema = z.object({
-        name: z.string().nonempty({message:'this should not be empty'}).min(3).max(40),
+        name: z.string().nonempty({ message: 'this should not be empty' }).min(3).max(40),
         details: z.string().max(250)
     })
 
@@ -39,19 +39,16 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
     });
 
     const onSubmit = (data: any) => {
-        console.log(data);
-
+        console.log('data............', data);
     }
 
 
     console.log('errors', errors);
 
-
-
     return (
         <div className='relative  border max-w-lg h-screen overflow-y-auto p-5'>
 
-            <button data-testid="cancel-button" onClick={() => setIsFormOpen(!isFormOpen)} className='absolute top-5 right-5 text-gray-400'>
+            <button onClick={() => setIsFormOpen(!isFormOpen)} className='absolute top-5 right-5 text-gray-400'>
                 <X weight="bold" size={18} /></button>
             <h3 className='text-2xl font-bold text-gray-700'>Add Role Profile</h3>
             <p className='text-gray-400 font-medium text-sm pt-1' >Get started by filling in the information to create new role profile</p>
@@ -68,6 +65,8 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                                 <div className="w-2/3 flex items-center space-x-3">
                                     <input
                                         type="text"
+                                        role='text-box'
+                                        id={`roles.${index}.name`}
                                         className="flex-grow bg-white rounded-md border focus:border-gray-400 focus:outline-none"
                                         {...register(`roles.${index}.name`)}
                                         defaultValue={item.name}
@@ -75,7 +74,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
 
                                     {index > 0 && (
-                                        <button type="button" onClick={() => remove(index)}>
+                                        <button type="button" data-testid='delete-button' onClick={() => remove(index)}>
                                             <Trash size={20} className='text-red-500' weight="bold" />
                                         </button>
                                     )}
@@ -93,9 +92,12 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
 
 
                             <div className="flex items-center space-x-3">
-                                <div className="w-1/3">Role Details </div>
+                                <label htmlFor={`roles.${index}.detail`} className="w-1/3">Role Details </label>
                                 <div className="w-2/3">
                                     <input
+                                        type='text'
+                                        role='text-box'
+                                        id={`roles.${index}.detail`}
                                         className="w-full bg-white rounded-md border focus:border-gray-400 focus:outline-none h-20"
                                         {...register(`roles.${index}.details`)}
                                         defaultValue={item.details}
@@ -112,7 +114,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                             )}
                         </div>
                     ))}
-                    <button type='button' className="button text-gray-600 flex items-center justify-center gap-2"
+                    <button data-testid='add-more-button' type='button' className="button text-gray-600 flex items-center justify-center gap-2"
                         onClick={() => append({ name: '', details: '' })}>
                         <PlusCircle size={20} weight="bold" />
                         <span>  Add More </span>
@@ -126,7 +128,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen }: Props) => {
                     }}
                         type="reset" className='' intent='secondary' size={'medium'} animate> Cancel</CvaButton>
 
-                    <CvaButton type="submit" className='' intent='primary' size={'medium'} animate> Create </CvaButton>
+                    <CvaButton type="submit" className='' intent='primary' size={'medium'} animate>Create</CvaButton>
 
                 </div>
             </form>
