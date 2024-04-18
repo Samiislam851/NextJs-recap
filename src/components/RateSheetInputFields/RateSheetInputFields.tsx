@@ -20,8 +20,9 @@ const RateSheetInputFields = (props: Props) => {
 
     const clientAxios = useAxiosConfig()
 
-    const [startDate, setStartDate] = useState(null);
-    const [startDate2, setStartDate2] = useState(null);
+
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
 
     const Control = ({ children, ...props }: ControlProps<any, boolean, any>) => (
         <components.Control {...props}>
@@ -30,12 +31,12 @@ const RateSheetInputFields = (props: Props) => {
     );
 
     const workTypeOptions = [
-        { value: 'part-time', label: 'Part Time' },
-        { value: 'full-time', label: 'Full Time' },
+        { value: 'PART_TIME', label: 'Part Time' },
+        { value: 'FULL_TIME', label: 'Full Time' },
 
     ];
 
-    const [selectedOption, setSelectedOption] = useState<{ value: string, label: string } | null>(null);
+
 
     const loadOptionsTeamMember = async () => {
         const response = await clientAxios(`/employee/list/active/roleId?roleId=${props.role._id}`);
@@ -43,28 +44,7 @@ const RateSheetInputFields = (props: Props) => {
         return response.data.map((option: any) => ({ value: option._id, label: option.name }))
     };
 
-    // const handleSelectOfTeamMember = async (selectedOption: any) => {
 
-    //     setAssignedEmployees((prev) => {
-    //         if (!prev) {
-    //             return
-    //         }
-    //         const addedValue = prev?.map((assignedEmployee) => {
-
-    //             console.log('hey.....', assignedEmployee);
-
-    //             if (assignedEmployee.employeeRoleId === role._id) {
-    //                 return { ...assignedEmployee, employeeId: selectedOption.value }
-    //             } else {
-    //                 return assignedEmployee
-
-    //             }
-    //         })
-    //         return addedValue
-    //     })
-
-    //     console.log('selected option....... ', selectedOption);
-    // }
 
 
     const handleSelectOfTeamMember = async (selectedOption: any) => {
@@ -79,8 +59,72 @@ const RateSheetInputFields = (props: Props) => {
                     return assignedEmployee;
                 }
             });
-        });      
+        });
     };
+
+
+    const handleSelectOfJobType = async (selectedOption: any) => {
+
+
+
+        setAssignedEmployees((prev) => {
+            if (!prev) {
+                return prev;
+            }
+            return prev.map((assignedEmployee) => {
+                if (assignedEmployee.employeeRoleId === role._id) {
+                    return { ...assignedEmployee, employmentStatus : selectedOption.value };
+                } else {
+                    return assignedEmployee;
+                }
+            });
+        });
+    };
+
+    const handleStartDateChange = async (date: Date) => {
+        setStartDate(date)
+        const formattedStartDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+        .toISOString()
+        .replace('T', ' ')
+        .replace(/\.\d{3}Z$/, '.000Z');
+
+
+        setAssignedEmployees((prev) => {
+            if (!prev) {
+                return prev;
+            }
+            return prev.map((assignedEmployee) => {
+                if (assignedEmployee.employeeRoleId === role._id) {
+                    return { ...assignedEmployee, startDate: formattedStartDate };
+                } else {
+                    return assignedEmployee;
+                }
+            });
+        });
+    };
+
+    const handleEndDateChange = (date: Date) => {
+        setEndDate(date)
+        const formattedEndDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
+        .toISOString()
+        .replace('T', ' ')
+        .replace(/\.\d{3}Z$/, '.000Z');
+        setAssignedEmployees((prev) => {
+            if (!prev) {
+                return prev;
+            }
+            return prev.map((assignedEmployee) => {
+                if (assignedEmployee.employeeRoleId === role._id) {
+                    return { ...assignedEmployee, endDate: formattedEndDate };
+                } else {
+                    return assignedEmployee;
+                }
+            });
+        });
+    };
+
+
+
 
 
 
@@ -101,8 +145,6 @@ const RateSheetInputFields = (props: Props) => {
                         defaultOptions
                     // defaultValue={selectedOption}
                     />
-
-
                 </div>
 
             </div>
@@ -110,17 +152,19 @@ const RateSheetInputFields = (props: Props) => {
                 <h3 className='font-bold pb-1'>Work Type <span className='text-red-500'>*</span></h3>
 
                 <div className='flex mt-1'>
+
                     <Select
                         placeholder={<div className='flex gap-2 justify-start'>
                             <span>Select</span>
                         </div>}
-                        defaultValue={selectedOption}
-                        onChange={setSelectedOption}
+
+                        onChange={handleSelectOfJobType}
 
                         options={workTypeOptions}
 
                         className='w-[80%] text-start'
                     />
+
                 </div>
             </div>
 
@@ -132,9 +176,8 @@ const RateSheetInputFields = (props: Props) => {
                     <DatePicker
                         className='focus:outline-none focus:border-none bg-white w-[300px]'
                         placeholderText={`Pick a start date`}
-                        selected={startDate} onChange={(date: any) => {
-                            return setStartDate(prev => date)
-                        }} />
+                        selected={startDate}
+                        onChange={handleStartDateChange} />
 
                 </div>
 
@@ -147,9 +190,8 @@ const RateSheetInputFields = (props: Props) => {
                     <DatePicker
                         className='focus:outline-none focus:border-none'
                         placeholderText={`Pick an end date`}
-                        selected={startDate2} onChange={(date: any) => {
-                            return setStartDate2(prev => date)
-                        }} />
+                        selected={endDate}
+                        onChange={handleEndDateChange} />
 
                 </div>
 

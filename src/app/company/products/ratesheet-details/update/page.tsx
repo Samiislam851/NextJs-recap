@@ -146,8 +146,8 @@ const Update = (props: Props) => {
 
 
                         </div>
-                        {savedMember === 'assigning' &&
-                            <>
+                        
+                            <div className={`${savedMember === 'assigning' ?'':'hidden'}`}>
                                 {
                                     selectedSheet.teamStructures.map(teamStructure =>
                                         <div key={teamStructure._id} className='p-10'>
@@ -172,8 +172,8 @@ const Update = (props: Props) => {
                                             <RateSheetInputFields setAssignedEmployees={setAssignedEmployees} assignedEmployees={assignedEmployees} role={teamStructure.role} />
                                         </div>)
                                 }
-                            </>
-                        }
+                            </div>
+                      
 
 
 
