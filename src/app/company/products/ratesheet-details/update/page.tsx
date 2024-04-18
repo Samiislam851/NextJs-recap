@@ -15,7 +15,7 @@ type Props = {}
 
 const Update = (props: Props) => {
 
-    const [assignedEmployees, setAssignedEmployees] = useState<AssignedEmployee | null>(null);
+    const [assignedEmployees, setAssignedEmployees] = useState<AssignedEmployee[] | null>(null);
 
     const [savedMember, setSavedMember] = useState<string>('not saved');
 
@@ -55,7 +55,6 @@ const Update = (props: Props) => {
                         startDate: "",
                         endDate: ""
                     }
-
                 })
                 return preparedArray
             }
@@ -106,8 +105,6 @@ const Update = (props: Props) => {
 
                     </div>
                 </div>
-
-
 
 
                 {selectedSheet ?
@@ -172,7 +169,7 @@ const Update = (props: Props) => {
 
                                             </div>
                                             {/* input fields */}
-                                            <RateSheetInputFields assignedEmployees={assignedEmployees} role={teamStructure.role} />
+                                            <RateSheetInputFields setAssignedEmployees={setAssignedEmployees} assignedEmployees={assignedEmployees} role={teamStructure.role} />
                                         </div>)
                                 }
                             </>

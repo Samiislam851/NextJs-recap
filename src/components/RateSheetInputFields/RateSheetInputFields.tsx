@@ -9,12 +9,13 @@ import { AssignedEmployee } from '@/utils/productEmployeesType';
 
 type Props = {
     role: Role,
-    assignedEmployees: AssignedEmployee | null
+    assignedEmployees: AssignedEmployee[] | null,
+    setAssignedEmployees: React.Dispatch<React.SetStateAction<AssignedEmployee[] | null>>
 }
 
 const RateSheetInputFields = (props: Props) => {
 
-    const { assignedEmployees } = props;
+    const { role, assignedEmployees, setAssignedEmployees } = props;
 
 
     const clientAxios = useAxiosConfig()
@@ -42,10 +43,46 @@ const RateSheetInputFields = (props: Props) => {
         return response.data.map((option: any) => ({ value: option._id, label: option.name }))
     };
 
-    const handleSelectOfTeamMember = async (selectedOption: any) => {
-        console.log('selected option....... ', selectedOption);
+    // const handleSelectOfTeamMember = async (selectedOption: any) => {
 
-    }
+    //     setAssignedEmployees((prev) => {
+    //         if (!prev) {
+    //             return
+    //         }
+    //         const addedValue = prev?.map((assignedEmployee) => {
+
+    //             console.log('hey.....', assignedEmployee);
+
+    //             if (assignedEmployee.employeeRoleId === role._id) {
+    //                 return { ...assignedEmployee, employeeId: selectedOption.value }
+    //             } else {
+    //                 return assignedEmployee
+
+    //             }
+    //         })
+    //         return addedValue
+    //     })
+
+    //     console.log('selected option....... ', selectedOption);
+    // }
+
+
+    const handleSelectOfTeamMember = async (selectedOption: any) => {
+        setAssignedEmployees((prev) => {
+            if (!prev) {
+                return prev;
+            }
+            return prev.map((assignedEmployee) => {
+                if (assignedEmployee.employeeRoleId === role._id) {
+                    return { ...assignedEmployee, employeeId: selectedOption.value };
+                } else {
+                    return assignedEmployee;
+                }
+            });
+        });      
+    };
+
+
 
     return (
         <div className='grid grid-cols-2 pt-3 gap-5'>
@@ -73,8 +110,6 @@ const RateSheetInputFields = (props: Props) => {
                 <h3 className='font-bold pb-1'>Work Type <span className='text-red-500'>*</span></h3>
 
                 <div className='flex mt-1'>
-
-
                     <Select
                         placeholder={<div className='flex gap-2 justify-start'>
                             <span>Select</span>
@@ -87,7 +122,6 @@ const RateSheetInputFields = (props: Props) => {
                         className='w-[80%] text-start'
                     />
                 </div>
-
             </div>
 
             <div className=''>
