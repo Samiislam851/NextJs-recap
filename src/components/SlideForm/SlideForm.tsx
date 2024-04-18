@@ -9,11 +9,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 type Props = {
     setIsFormOpen: React.Dispatch<React.SetStateAction<boolean>>,
     isFormOpen: boolean,
-    clickFunction?: any
+    clickFunction?: (data: any) => void
 }
 
 const SlideForm = ({ setIsFormOpen, isFormOpen, clickFunction }: Props) => {
 
+    console.log('click func type::::::', typeof clickFunction);
 
 
     const roleSchema = z.object({
@@ -40,7 +41,7 @@ const SlideForm = ({ setIsFormOpen, isFormOpen, clickFunction }: Props) => {
 
     const onSubmit = (data: any) => {
         console.log('data............', data);
-        clickFunction(data)
+        clickFunction?.(data)
     }
 
 
