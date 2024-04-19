@@ -10,12 +10,14 @@ import { AssignedEmployee } from '@/utils/productEmployeesType';
 type Props = {
     role: Role,
     assignedEmployees: AssignedEmployee[] | null,
-    setAssignedEmployees: React.Dispatch<React.SetStateAction<AssignedEmployee[] | null>>
+    setAssignedEmployees: React.Dispatch<React.SetStateAction<AssignedEmployee[] | null>>,
+    saveBool: boolean,
+    idx: number
 }
 
 const RateSheetInputFields = (props: Props) => {
 
-    const { role, assignedEmployees, setAssignedEmployees } = props;
+    const { role, saveBool, assignedEmployees, idx, setAssignedEmployees } = props;
 
 
     const clientAxios = useAxiosConfig()
@@ -73,7 +75,7 @@ const RateSheetInputFields = (props: Props) => {
             }
             return prev.map((assignedEmployee) => {
                 if (assignedEmployee.employeeRoleId === role._id) {
-                    return { ...assignedEmployee, employmentStatus : selectedOption.value };
+                    return { ...assignedEmployee, employmentStatus: selectedOption.value };
                 } else {
                     return assignedEmployee;
                 }
@@ -84,9 +86,9 @@ const RateSheetInputFields = (props: Props) => {
     const handleStartDateChange = async (date: Date) => {
         setStartDate(date)
         const formattedStartDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-        .toISOString()
-        .replace('T', ' ')
-        .replace(/\.\d{3}Z$/, '.000Z');
+            .toISOString()
+            .replace('T', ' ')
+            .replace(/\.\d{3}Z$/, '.000Z');
 
 
         setAssignedEmployees((prev) => {
@@ -106,9 +108,9 @@ const RateSheetInputFields = (props: Props) => {
     const handleEndDateChange = (date: Date) => {
         setEndDate(date)
         const formattedEndDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000))
-        .toISOString()
-        .replace('T', ' ')
-        .replace(/\.\d{3}Z$/, '.000Z');
+            .toISOString()
+            .replace('T', ' ')
+            .replace(/\.\d{3}Z$/, '.000Z');
         setAssignedEmployees((prev) => {
             if (!prev) {
                 return prev;
@@ -134,7 +136,7 @@ const RateSheetInputFields = (props: Props) => {
             <div className=''>
                 <h3 className='font-bold pb-1'>Team Member <span className='text-red-500'>*</span></h3>
 
-                <div className='flex mt-1'>
+                <div className='flex flex-col mt-1'>
 
                     <AsyncSelect
                         {...props}
@@ -145,13 +147,24 @@ const RateSheetInputFields = (props: Props) => {
                         defaultOptions
                     // defaultValue={selectedOption}
                     />
+
+
+
+                    {assignedEmployees ? <>
+
+                        {saveBool && assignedEmployees[idx].employeeId === '' ? <div className='text-red-500'>Team member is required</div> : null}
+
+                    </> : null}
+
+
+
                 </div>
 
             </div>
             <div className=''>
                 <h3 className='font-bold pb-1'>Work Type <span className='text-red-500'>*</span></h3>
 
-                <div className='flex mt-1'>
+                <div className='flex flex-col gap-1 mt-1'>
 
                     <Select
                         placeholder={<div className='flex gap-2 justify-start'>
@@ -165,21 +178,38 @@ const RateSheetInputFields = (props: Props) => {
                         className='w-[80%] text-start'
                     />
 
+
+                    {assignedEmployees ? <>
+
+                        {saveBool && assignedEmployees[idx].employmentStatus === '' ? <div className='text-red-500'>Work type is required</div> : null}
+
+                    </> : null}
+
                 </div>
             </div>
 
             <div className=''>
                 <h3 className='font-bold pb-1'>Start Date <span className='text-red-500'>*</span></h3>
+                <div className='flex flex-col'>
+                    <div className=' w-[80%]  bg-white flex items-center py-[6px] gap-2 border border-gray-300 rounded p-1 '>
+                        <CalendarBlank size={20} />
+                        <DatePicker
+                            className='focus:outline-none focus:border-none bg-white w-[300px]'
+                            placeholderText={`Pick a start date`}
+                            selected={startDate}
+                            onChange={handleStartDateChange} />
 
-                <div className=' w-[80%]  bg-white flex items-center py-[6px] gap-2 border border-gray-300 rounded p-1 '>
-                    <CalendarBlank size={20} />
-                    <DatePicker
-                        className='focus:outline-none focus:border-none bg-white w-[300px]'
-                        placeholderText={`Pick a start date`}
-                        selected={startDate}
-                        onChange={handleStartDateChange} />
+
+
+                    </div>
+                    {assignedEmployees ? <>
+
+                        {saveBool && assignedEmployees[idx].startDate === '' ? <div className='text-red-500'>Start Date is required</div> : null}
+
+                    </> : null}
 
                 </div>
+
 
             </div>
             <div className=''>

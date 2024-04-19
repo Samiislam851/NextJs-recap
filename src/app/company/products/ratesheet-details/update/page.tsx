@@ -17,6 +17,9 @@ const Update = (props: Props) => {
 
     const [assignedEmployees, setAssignedEmployees] = useState<AssignedEmployee[] | null>(null);
 
+
+    const [saveBool, setSaveBool] = useState(false);
+
     const [savedMember, setSavedMember] = useState<string>('not saved');
 
     const [selectedSheet, setSelectedSheet] = useState<RateSheetDataType | null>(null);
@@ -60,7 +63,6 @@ const Update = (props: Props) => {
             }
             )
 
-
         } catch (error) {
             console.log('error = ', error);
         }
@@ -80,7 +82,24 @@ const Update = (props: Props) => {
         })
     }
 
+    const handleSave = () => {
 
+        setSaveBool(true);
+
+        let hasError = false;
+        assignedEmployees?.forEach((employee) => {
+            if (!employee.employeeId || !employee.employmentStatus || !employee.startDate ) {
+                hasError = true;
+            }
+        });
+        if (hasError) {
+            console.log("Please fill in all fields.");
+            return;
+        }
+        setSavedMember('saved');
+    };
+
+    
     return (
         <div >
             <div className='p-7 bg-[#FAFBFC]'>
@@ -126,7 +145,9 @@ const Update = (props: Props) => {
 
                             {savedMember === 'assigning' &&
                                 <button
-                                    onClick={() => setSavedMember('saved')}
+                                    onClick={
+                                        handleSave
+                                    }
                                     className='flex item-center text-blue-500 font-semibold gap-1 items-center'>
                                     <CheckCircle size={20} /> <div> Save Member </div>
                                 </button>}
@@ -146,34 +167,37 @@ const Update = (props: Props) => {
 
 
                         </div>
-                        
-                            <div className={`${savedMember === 'assigning' ?'':'hidden'}`}>
-                                {
-                                    selectedSheet.teamStructures.map(teamStructure =>
-                                        <div key={teamStructure._id} className='p-10'>
-                                            <div className='flex justify-between pb-3 border-b-2 '>
-                                                <div>
-                                                    <h3 className='font-bold text-xl'>{teamStructure?.role?.name}</h3>
-                                                    <p className='text-gray-400 text-sm pt-2'>Internal Rate: ${teamStructure.internalRate}/hr
 
-                                                        Billing Rate : ${teamStructure.billRate}/hr</p>
-                                                </div>
+                        <div className={`${savedMember === 'assigning' ? '' : 'hidden'}`}>
+                            {
+                                selectedSheet.teamStructures.map((teamStructure, idx) =>
+                                    <div key={teamStructure._id} className='p-10'>
+                                        <div className='flex justify-between pb-3 border-b-2 '>
+                                            <div>
+                                                <h3 className='font-bold text-xl'>{teamStructure?.role?.name}</h3>
+                                                <p className='text-gray-400 text-sm pt-2'>Internal Rate: ${teamStructure.internalRate}/hr
 
-                                                <div className='flex gap-2 justify-center items-center'>
-                                                    <button className='flex gap-1 items-center justify-center'>
-                                                        <Copy size={20} /> <span>Duplicate Role</span>
-                                                    </button>
-
-                                                    <button onClick={() => handleDeleteRole(teamStructure._id)}> <MinusCircle className='text-red-500' size={20} /></button>
-                                                </div>
-
+                                                    Billing Rate : ${teamStructure.billRate}/hr</p>
                                             </div>
-                                            {/* input fields */}
-                                            <RateSheetInputFields setAssignedEmployees={setAssignedEmployees} assignedEmployees={assignedEmployees} role={teamStructure.role} />
-                                        </div>)
-                                }
-                            </div>
-                      
+
+                                            <div className='flex gap-2 justify-center items-center'>
+                                                <button className='flex gap-1 items-center justify-center'>
+                                                    <Copy size={20} /> <span>Duplicate Role</span>
+                                                </button>
+
+                                                <button onClick={() => handleDeleteRole(teamStructure._id)}> <MinusCircle className='text-red-500' size={20} /></button>
+                                            </div>
+
+                                        </div>
+                                        {/* input fields */}
+                                        <RateSheetInputFields 
+                                        idx={idx}
+                                        saveBool={saveBool}
+                                        setAssignedEmployees={setAssignedEmployees} assignedEmployees={assignedEmployees} role={teamStructure.role} />
+                                    </div>)
+                            }
+                        </div>
+
 
 
 
